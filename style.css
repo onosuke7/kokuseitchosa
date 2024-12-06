@@ -1,0 +1,40 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f9;
+  }
+  
+  #game-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .category {
+    border: 2px dashed #0078d7;
+    padding: 20px;
+    margin: 10px;
+    background: #e0f7ff;
+    min-height: 50px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .data-item {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px 15px;
+    background: #ffcccb;
+    border-radius: 5px;
+    cursor: grab;
+    font-size: 16px;
+  }
+  
+  #status {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+  
