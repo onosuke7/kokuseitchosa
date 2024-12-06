@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国勢調査オンライン回答チュートリアル</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #3548c0;
+            color: white;
+            text-align: center;
+            padding: 1em;
+        }
+        nav {
+            text-align: center;
+            margin: 1em;
+        }
+        
+        main {
+            max-width: auto;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: auto;
+            margin: auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .field-group {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .field-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .field-group input[type="number"], .field-group input[type="text"], .field-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .checkbox-group label {
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .button {
+            background-color: #3548c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .button:hover {
+            background-color: #3548c0;
+        }
+        .center {
+            text-align: center;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>国勢調査オンライン回答サイト</h1>
+</header>
+
+<main id="home">
+    <h2>ようこそ！</h2>
+    <p>このサイトは、国勢調査のオンライン回答を体験するためのサイトです。以下のフォームにご回答いただき、「送信」ボタンを押して完了させてください。</p>
+</main>
+
+<main id="form">
+    <h2>世帯員の数及び世帯の種類</h2>
+    <p>普段住んでいる人の全員の人数を男女別に入力し、世帯の種類を選択してください(総数は自動計算されます)。</p>
+    <p>なお、10月1日午前零時までに生まれて、まだ出生の届け出が済んでいない新生児についても人数に含めてください。</p>
+    <div class="container">
+        <div class="field-group">
+            <h2>世帯員の数</h2>
+            <label for="num_male">・世帯員の数 (男性)</label>
+            <input type="number" id="num_male" name="num_male" min="0" placeholder="例: 3"  required>
+            <label for="num_female">・世帯員の数 (女性)</label>
+            <input type="number" id="num_female" name="num_female" min="0" placeholder="例: 2"  required>
+        </div>
+
+        <div class="field-group">
+            <label for="head_relation">・世帯主と続柄</label>
+            <select id="head_relation" name="head_relation" required>
+                <option value="">選択してください</option>
+                <option value="本人">本人</option>
+                <option value="配偶者">配偶者</option>
+                <option value="子">子</option>
+                <option value="親">親</option>
+                <option value="その他">その他</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label for="birthdate">・出生の年月</label>
+            <input type="month" id="birthdate" name="birthdate" required>
+        </div>
+
+        <div class="field-group">
+            <label for="marital_status">・配偶者の有無</label>
+            <select id="marital_status" name="marital_status" required>
+                <option value="">選択してください</option>
+                <option value="あり">あり</option>
+                <option value="なし">なし</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label for="nationality">・国籍</label>
+            <select id="nationality" name="nationality" required>
+                <option value="">選択してください</option>
+                <option value="日本">日本</option>
+                <option value="その他">その他</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label for="residence_duration">・現在の場所に住んでいる期間</label>
+            <input type="number" id="residence_duration" name="residence_duration" min="0" placeholder="年数" required>
+        </div>
+
+        <div class="field-group">
+            <label for="education">・最終学歴</label>
+            <select id="education" name="education" required>
+                <option value="">選択してください</option>
+                <option value="中学卒">中学卒</option>
+                <option value="高校卒">高校卒</option>
+                <option value="大学卒">大学卒</option>
+                <option value="その他">その他</option>
+            </select>
+        </div>
+
+        <div class="field-group">
+            <label for="work">・一週間の仕事</label>
+            <input type="text" id="work" name="work" required>
+        </div>
+
+        <div class="field-group">
+            <label>・従業地または通学地</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="location" value="国内"> 国内</label>
+                <label><input type="checkbox" name="location" value="海外"> 海外</label>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>・利用交通手段</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="transport" value="自動車"> 自動車</label>
+                <label><input type="checkbox" name="transport" value="自転車"> 自転車</label>
+                <label><input type="checkbox" name="transport" value="電車"> 電車</label>
+                <label><input type="checkbox" name="transport" value="バス"> バス</label>
+                <label><input type="checkbox" name="transport" value="徒歩"> 徒歩</label>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>・勤めか自営か</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="work_type" value="勤め"> 勤め</label>
+                <label><input type="checkbox" name="work_type" value="自営"> 自営</label>
+            </div>
+        </div>
+
+        <div class="field-group">
+            <label>・住居の種類</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="residence_type" value="持ち家"> 持ち家</label>
+                <label><input type="checkbox" name="residence_type" value="賃貸"> 賃貸</label>
+            </div>
+        </div>
+
+        <div class="center">
+            <a href="index.html" class="button">HOMEに戻る
+        </div>
+    </div>
+</main>
