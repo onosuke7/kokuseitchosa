@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国勢調査クイズゲーム</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        h1 {
+            color: #3548c0;
+        }
+        .back-button {
+            background-color:red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        .back-button:hover {
+            background-color: red;
+        }
+        .start-button {
+            background-color: #3548c0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        .start-button:hover {
+            background-color: #2e3b90;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>国勢調査クイズゲーム</h1>
+        <p>国勢調査に関する4択クイズに挑戦しましょう！</p>
+        <button class="back-button" onclick="backhome()">戻る</button>
+        <button class="start-button" onclick="startQuiz()">スタート</button>
+    </div>
+
+    <script>
+        function startQuiz() {
+            window.location.href = "kuizu.HTML";
+        }
+        function backhome(){
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
