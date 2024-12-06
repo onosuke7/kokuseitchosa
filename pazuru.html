@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>国勢調査データ整理パズル</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .btn-back {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: #3548c0;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: background-color 0.3s, transform 0.3s;
+    }
+    .btn-back:hover {
+      background-color: #303f9f;
+      transform: translateY(-2px);
+    }
+    .btn-back:active {
+      background-color: #283593;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>国勢調査データ整理パズル</h1>
+    <p>データを正しいカテゴリーにドラッグ＆ドロップしてください。</p>
+    <div id="categories">
+      <div class="category" id="population">日本の人口</div>
+      <div class="category" id="household">日本の世帯</div>
+      <div class="category" id="housing">日本の住居</div>
+    </div>
+    <div id="data-items">
+      <div class="data-item" id="item1" draggable="true" data-category="population">約1億2千万</div>
+      <div class="data-item" id="item2" draggable="true" data-category="population">約1億5千万</div>
+      <div class="data-item" id="item3" draggable="true" data-category="household">約4000万</div>
+      <div class="data-item" id="item4" draggable="true" data-category="housing">約3000万</div>
+    </div>
+    <div id="status">スコア: <span id="score">0</span></div>
+    <a href="index.html" class="btn-back">HOMEに戻る</a>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
