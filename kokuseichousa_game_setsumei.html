@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>国勢調査ゲーム - 説明</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        ul {
+            text-align: left;
+            display: inline-block;
+            font-size: 18px;
+            line-height: 1.8;
+            margin: 20px auto;
+            padding-left: 20px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .btn-home {
+            font-size: 20px;
+            padding: 10px 20px;
+            background-color: #5bc0de;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .btn-home:hover {
+            background-color: #31b0d5;
+        }
+    </style>
+</head>
+<body>
+    <h1>国勢調査ゲーム</h1>
+    <p>
+        このゲームは、**百人一首をアレンジした国勢調査版**のゲームです。
+    </p>
+    <p>
+        以下の手順に従ってゲームを進めてください：
+    </p>
+    <ul>
+        <li>
+            **画面には「上の文」が1文ずつ表示されます**。  
+            プレイヤーは、その「上の文」に適切に一致する「下の文」を選択してください。
+        </li>
+        <li>
+            「下の文」は番号付きで複数提示されます。正しい文の番号を入力し、「送信」ボタンを押して回答します。
+        </li>
+        <li>
+            正解であれば次の問題に進みます。不正解の場合はもう一度答え直してください。
+        </li>
+        <li>
+            **すべての問題を解答し終えるとゲーム終了**となり、クリアまでにかかった時間が表示されます。
+        </li>
+        <li>
+            目標は、短時間で正確に解答することです！
+        </li>
+    </ul>
+    <p>
+        このゲームを通じて、国勢調査の重要性や基本的な知識を楽しく学ぶことができます。気軽に挑戦してみてください！
+    </p>
+    <button onclick="startGame()">ゲーム開始</button>
+    <button class="btn-home" onclick="goHome()">HOMEに戻る</button>
+
+    <script>
+        function startGame() {
+            // ゲーム画面に移動
+            window.location.href = "kokuseichousa_game.html";
+        }
+        
+        function goHome() {
+            // HOME画面に移動
+            window.location.href = "index.html"; // HOMEページのURLを指定してください
+        }
+    </script>
+</body>
+</html>
