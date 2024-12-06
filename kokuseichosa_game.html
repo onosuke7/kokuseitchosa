@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>百人一首ゲーム（国勢調査版）</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color: #f9f9f9;
+            font-size: 18px; 
+        }
+        h1 {
+            color: #333;
+            font-size: 32px; 
+        }
+        h2 {
+            font-size: 24px;
+        }
+        #game-container {
+            margin-top: 30px;
+        }
+        #poem-section {
+            margin-bottom: 20px;
+        }
+        #simo-text, #kami-text {
+            white-space: pre-wrap;
+            font-size: 20px;
+            text-align: left;
+            margin: 0 auto;
+            display: inline-block;
+        }
+        #input-section {
+            margin-top: 20px;
+        }
+        #user-input {
+            padding: 10px;
+            font-size: 18px;
+        }
+        #submit-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        #result-message {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+        #timer {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #555;
+        }
+        #home-button {
+            display: none;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #5cb85c;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #home-button:hover {
+            background-color: #4cae4c;
+        }
+    </style>
+</head>
+<body>
+    <h1>百人一首ゲーム（国勢調査版）</h1>
+    <div id="game-container">
+        <div id="timer">経過時間: 0 秒</div>
+        </div>
+        <div class="poem-section">
+            <h2>【上の文】</h2>
+            <div id="kami-text"></div>
+        <div class="poem-section">
+            <h2>【下の文】</h2>
+            <div id="simo-text"></div>
+        </div>
+        <div id="input-section">
+            <input type="number" id="user-input" placeholder="文の番号を入力" min="1" max="100">
+            <button id="submit-button">送信</button>
+        </div>
+        <div id="result-message"></div>
+        <p><a href = "index.html">HOMEに戻る</a></p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const kami = [
+                "国勢調査の目的は",
+                "国勢調査が行われる周期は",
+                "国勢調査にインターネットで回答する場合、提出期限は",
+                "調査票を配布する人物は",
+                "国勢調査の調査結果は",
+                "国勢調査に協力しない場合は",
+                "国勢調査が初めて行われたのは",
+                "インターネット回答のメリットは",
+                "国勢調査で得られた情報は",
+                "国勢調査に回答する方法は",
+            ];
+
+            const simo = [
+                "日本の人口や世帯の実態を把握し、行政や政策に役立てること",
+                "5年ごとに実施される",
+                "調査票配布から約2週間後までが目安となっている",
+                "地域ごとに割り当てられた国勢調査員が戸別訪問で配布する",
+                "選挙区の区割り、地方交付税の算定、行政サービスの改善に活用されている",
+                "統計法に基づき、罰則の対象になることもある",
+                "1920年（大正9年）に実施された",
+                "回答が手軽で迅速にできる",
+                "統計法に基づき、厳格に保護され、統計データとしてのみ利用される",
+                "インターネット回答、紙の調査票での郵送等がある",
+            ];
+
+            let selectedPoems = [];
+            let answerIndex;
+            let startTime;
+            let timerInterval;
+
+            function startTimer() {
+                const timerElement = document.getElementById("timer");
+                startTime = new Date();
+                timerInterval = setInterval(() => {
+                    const elapsed = Math.floor((new Date() - startTime) / 1000);
+                    timerElement.textContent = `経過時間: ${elapsed} 秒`;
+                }, 1000);
+            }
+
+            function stopTimer() {
+                clearInterval(timerInterval);
+                const elapsedTime = Math.floor((new Date() - startTime) / 1000);
+                document.getElementById("result-message").textContent += ` ゲームにかかった時間: ${elapsedTime} 秒`;
+            }
+
+            function startGame() {
+                // タイマー開始
+                startTimer();
+
+                // ランダムな文を選択
+                const allIndices = Array.from({ length: kami.length }, (_, i) => i);
+                selectedPoems = [];
+
+                while (selectedPoems.length < 10) {
+                    const randIndex = Math.floor(Math.random() * allIndices.length);
+                    selectedPoems.push(allIndices.splice(randIndex, 1)[0]);
+                }
+
+                displayNextQuestion();
+            }
+
+            function displayNextQuestion() {
+                if (selectedPoems.length === 0) {
+                    stopTimer();
+                    document.getElementById("result-message").textContent = "ゲーム終了！すべての問題を解きました。";
+                    document.getElementById("result-message").style.color = "#5cb85c"; // 緑色
+                    document.getElementById("home-button").style.display = "inline-block"; // ホームボタンを表示
+                    return;
+                }
+
+                const sortedIndices = [...selectedPoems].sort((a, b) => a - b);
+                let simoText = "";
+                sortedIndices.forEach((index) => {
+                    simoText += `${index + 1}: ${simo[index]}\n`;
+                });
+                document.getElementById("simo-text").textContent = simoText;
+
+                const randomIndex = Math.floor(Math.random() * selectedPoems.length);
+                answerIndex = selectedPoems.splice(randomIndex, 1)[0];
+                document.getElementById("kami-text").textContent = kami[answerIndex];
+
+                document.getElementById("user-input").value = "";
+                document.getElementById("result-message").textContent = "";
+            }
+            
+            document.getElementById("submit-button").addEventListener("click", function() {
+                const userAnswer = document.getElementById("user-input").value;
+                const resultMessage = document.getElementById("result-message");
+
+                if (userAnswer == "0") {
+                    resultMessage.textContent = "ゲームを終了します。";
+                    resultMessage.style.color = "#d9534f"; // 赤色
+                    stopTimer();
+                    return;
+                }
+                if (parseInt(userAnswer) - 1 === answerIndex) {
+                    resultMessage.textContent = "正解です！次の問題へ進みます。";
+                    resultMessage.style.color = "#5cb85c"; // 緑色
+                    setTimeout(displayNextQuestion, 2000); // 2秒後に次の問題を表示
+                } else {
+                    resultMessage.textContent = "お手つきです。もう一度入力してください。";
+                    resultMessage.style.color = "#d9534f"; // 赤色
+                }
+            });
+
+            startGame();
+        });
+    </script>
+</body>
+</html>
