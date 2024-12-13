@@ -7,14 +7,14 @@
     <title>国勢調査チュートリアル</title>
     <style>
       body {
-        background-image: url("31104625_l.jpg"); /* 画像のパスを指定 */
-        background-size: cover; /* 画像を画面全体に表示 */
-        background-repeat: no-repeat; /* 画像の繰り返しを防ぐ */
-        background-position: center; /* 画像を中央に配置 */
+        background-image: url("31104625_l.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
         font-family: Arial, sans-serif;
         color: #333;
-        margin: 50px;
-        padding: 50px;
+        margin: 10px;
+        padding: 10px;
       }
       nav {
         width: 100%;
@@ -28,204 +28,79 @@
       }
       ul {
         display: flex;
+        margin: 0;
+        padding: 0;
       }
       li {
         list-style: none;
+        margin-right: 20px;
       }
       a {
-        display: block;
         text-decoration: none;
-        color: white;
-        margin-right: 35px;
+        color: black;
+        font-size: 18px;
       }
-
+      a:hover {
+        text-decoration: underline;
+      }
       #title_name {
-        font-size: 60px; /* 少し小さく調整 */
-        color: white; /* 文字色を白に変更 */
+        font-size: 60px;
+        color: white;
         text-align: center;
-        margin: 20px 0;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* 黒い影を追加 */
-        background-color: rgba(0, 0, 0, 0.5); /* 半透明の黒背景 */
+        margin: 80px 0 20px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        background-color: rgba(0, 0, 0, 0.5);
         display: inline-block;
         padding: 10px 20px;
         border-radius: 10px;
       }
-
-      #child1 {
-        background-color: rgba(209, 231, 221, 0.8); /* 半透明のミントグリーン */
-        color: white;
+      #child1, #child2, #child3, #child4, #game_1, #game_2, #game_3, #game_4, #チュートリアル {
+        background-color: rgba(209, 231, 221, 0.8);
+        color: black;
         padding: 20px;
-        margin: 10px;
-        border-radius: 10px;
-      }
-
-      #child2 {
-        background-color: rgba(209, 231, 221, 0.8); /* 半透明のオレンジ */
-        color: white;
-        padding: 20px;
-        margin: 10px;
-        border-radius: 10px;
-      }
-      #child3 {
-        background-color: rgba(209, 231, 221, 0.8);
-        color: white;
-        padding: 5px;
-        margin: 10px;
-        height: 50px;
-        border-radius: 10px;
-      }
-      #child4 {
-        background-color: rgba(209, 231, 221, 0.8);
-        color: white;
-        padding: 5px;
-        margin: 10px;
-        height: 50px;
-        border-radius: 10px;
-      }
-
-      #game_1 {
-        background-color: rgba(209, 231, 221, 0.8); /* 半透明のラベンダー */
-        color: white;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
         margin: 10px 0;
-      }
-
-      #game_2 {
-        background-color: rgba(209, 231, 221, 0.8); /* 半透明のブルー */
-        color: white;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         border-radius: 10px;
-        margin: 10px 0;
+        text-align: center;
       }
-      #game_3 {
-        background-color: rgba(209, 231, 221, 0.8); /* 半透明のブルー */
-        color: white;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        margin: 10px 0;
-      }
-      #game_4 {
-        background-color: rgba(209, 231, 221, 0.8); /* 半透明のブルー */
-        color: white;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        margin: 10px 0;
-      }
-      #チュートリアル {
-        background-color: rgba(209, 231, 221, 0.8);
-        color: white;
-        width: 100%;
-        height: 100px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px;
-        margin: 10px 0;
-      }
-
-      #国勢調査とは {
-        line-height: 1.5;
-        color: rgb(0, 0, 0);
-      }
-
       #国勢調査の説明 {
         font-size: 18px;
         line-height: 1.8;
         color: black;
-        margin-bottom: 20px;
       }
-      #sentence {
+      #sentence, #sentence_2 {
         font-size: 18px;
-        line-height: 1;
         color: black;
-        margin-bottom: 20px;
-        justify-content: center;
-        align-items: center;
-        display: flex;
+        margin: 20px 0;
       }
-      #sentence_2 {
-        font-size: 18px;
-        line-height: 1;
-        color: black;
-        margin-bottom: 20px;
-        justify-content: center;
-        align-items: center;
-        display: flex;
-      }
-
-      #国勢調査広告 {
-        font-size: 24px;
-        color: black;
-        margin-bottom: 10px;
-      }
-
-      a {
-        color: black;
-        text-decoration: none;
-      }
-
-      a:hover {
-        text-decoration: underline;
-      }
-
       @media (min-width: 800px) {
-        #parent {
+        #parent, #parent_2, #parent_3 {
           display: flex;
           justify-content: space-between;
         }
-        #child1,
-        #child2 {
+        #child1, #child2, #game_1, #game_2, #game_3, #game_4 {
           flex-grow: 1;
-          margin: 10px;
-        }
-        #child3,
-        #child4 {
-          flex-grow: 1;
+          width: 48%;
           margin: 10px;
         }
       }
-      @media (min-width: 800px) {
-        #parent_2 {
+      @media (max-width: 600px) {
+        #title_name {
+          font-size: 40px;
+        }
+        #sentence, #sentence_2 {
+          font-size: 16px;
+        }
+        a {
+          font-size: 16px;
+        }
+        #parent, #parent_2, #parent_3 {
           display: flex;
+          flex-direction: column;
         }
-        #game_1,
-        #game_2 {
-          flex-grow: 1;
-          width: 48%;
-          margin: 30px 1%;
+        #child1, #child2, #game_1, #game_2, #game_3, #game_4 {
+          width: 100%;
+          margin: 10px 0;
         }
-      }
-      @media (min-width: 800px) {
-        #parent_3 {
-          display: flex;
-        }
-        #game_3,
-        #game_4 {
-          flex-grow: 1;
-          width: 48%;
-          margin: 10px 1%;
-        }
-      }
-      #チュートリアル {
-        width: 98%;
-        margin: 50px 1%;
       }
     </style>
   </head>
@@ -237,34 +112,25 @@
       </ul>
     </nav>
     <h1 id="title_name">国勢調査にむけて</h1>
-
     <div id="parent">
       <div id="child1">
-        <h2 id="国勢調査とは">国勢調査とは</h2>
+        <h2>国勢調査とは</h2>
         <p id="国勢調査の説明">
           国勢調査は、我が国に住んでいるすべての人と世帯を対象とする国の最も重要な統計調査です。
           国勢調査から得られる様々な統計は、国や地方公共団体の政治・行政において利用されることは
-          もとより、民間企業や研究機関でも広く利用され、そのような利用を通じて国民生活に役立てら
-          れています。
+          もとより、民間企業や研究機関でも広く利用され、そのような利用を通じて国民生活に役立てられています。
         </p>
       </div>
-
       <div id="child2">
-        <h2 id="国勢調査広告">国勢調査の広告</h2>
-        <p>
-          <a href="https://www.youtube.com/watch?v=baTAeXZogI8"
-            >2020年国勢調査呼びかけCM - YouTube</a
-          >
-        </p>
+        <h2>国勢調査の広告</h2>
+        <p><a href="https://www.youtube.com/watch?v=baTAeXZogI8">2020年国勢調査呼びかけCM - YouTube</a></p>
       </div>
     </div>
     <div id="child4">
       <h3 id="sentence">国勢調査の回答を体験しよう</h3>
     </div>
     <div id="チュートリアル">
-      <a href="mogi.HTML" style="color: blue; font-size: 40px"
-        >国勢調査チュートリアル</a
-      >
+      <a href="mogi.HTML" style="color: blue; font-size: 40px">国勢調査チュートリアル</a>
     </div>
     <div id="child3">
       <h3 id="sentence_2">国勢調査をゲームを通して詳しくなろう</h3>
@@ -274,21 +140,15 @@
         <a href="setu.HTML" style="color: blue; font-size: 40px">神経衰弱</a>
       </div>
       <div id="game_2">
-        <a href="start.HTML" style="color: blue; font-size: 40px"
-          >国勢調査クイズ</a
-        >
+        <a href="start.HTML" style="color: blue; font-size: 40px">国勢調査クイズ</a>
       </div>
     </div>
     <div id="parent_3">
       <div id="game_3">
-        <a href="kokuseichousa_game_setsumei.html" style="color: blue; font-size: 40px"
-          >百人一首ゲーム</a4
-        >
+        <a href="kokuseichousa_game_setsumei.html" style="color: blue; font-size: 40px">百人一首ゲーム</a>
       </div>
       <div id="game_4">
-        <a href="pazuru.html" style="color: blue; font-size: 40px"
-          >データ整理パズル</a
-        >
+        <a href="pazuru.html" style="color: blue; font-size: 40px">データ整理パズル</a>
       </div>
     </div>
   </body>
