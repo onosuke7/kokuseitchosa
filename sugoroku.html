@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>すごろくゲーム - 国勢調査</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>すごろくゲーム - 国勢調査</h1>
+
+        <div id="player-setup">
+            <label for="num-players">プレイヤーの人数を選んでください:</label>
+            <select id="num-players">
+                <option value="1">1人</option>
+                <option value="2">2人</option>
+                <option value="3">3人</option>
+                <option value="4">4人</option>
+            </select>
+            <button id="choose-names">次へ</button>
+        </div>
+
+        <div id="name-setup" style="display: none;">
+            <h2>プレイヤーの名前を入力してください:</h2>
+            <div id="name-inputs"></div>
+            <button id="start-game">ゲームを開始</button>
+        </div>
+
+        <div id="game-board" style="display: none;">
+            <canvas id="board-canvas"></canvas>
+
+            <div id="question-area" style="margin-top: 20px;">
+                <p>国勢調査に関する質問: <span id="question"></span></p>
+                <div id="answers-container"></div>
+                <button id="submit-answer">回答する</button>
+                <p id="feedback"></p>
+                <button id="next-button" style="display: none;">次へ</button>
+            </div>
+
+            <div id="dice-display" style="margin: 20px 0; display: none;">
+                <img id="dice-image" src="" alt="サイコロの目" style="width: 150px; height: 150px;">
+                <button id="roll-dice-button">サイコロを振る</button>
+            </div>
+
+            <p id="current-player">現在のプレイヤー: <span id="current-player-name"></span></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
