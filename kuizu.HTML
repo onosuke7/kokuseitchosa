@@ -264,7 +264,7 @@
             showModal("正解！", true);
             score++;
         } else {
-            showModal("不正解！", false);
+            showModal(`不正解！ 正解は「${quiz[quizIndex].correct}」です。`, false);
         }
         questionsAnswered++;
         if (questionsAnswered < 10) {
