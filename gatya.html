@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ガチャ国勢調査</title>
+    <style>
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        .container { 
+            text-align: center; 
+            background: rgba(255, 255, 255, 0.8); 
+            padding: 5%; 
+            border-radius: 1em; 
+            box-shadow: 0 0 1.5em rgba(0, 0, 0, 0.2); 
+            max-width: 90%; 
+            margin: 2em;
+        }
+        .character, .enemy { 
+            margin: 2%; 
+            padding: 5%; 
+            border: 0.2em solid black; 
+            width: 90%; 
+            box-sizing: border-box; 
+            background: #ffffff; 
+            border-radius: 1em; 
+            transition: transform 0.3s;
+        }
+        .character:hover, .enemy:hover { 
+            transform: scale(1.05); 
+        }
+        .item { 
+            margin: 2%; 
+            padding: 5%; 
+            border: 0.2em solid blue; 
+            display: inline-block; 
+            background: #f0f8ff; 
+            border-radius: 0.5em; 
+            transition: background 0.3s;
+        }
+        .item:hover { 
+            background: #add8e6; 
+        }
+        .rare10 { border-color: purple; }
+        .rare5 { border-color: red; }
+        .rare4 { border-color: orange; }
+        .rare3 { border-color: yellow; }
+        .rare2 { border-color: green; }
+        .rare1 { border-color: blue; }
+        .new { border-color: cyan; }
+        .gacha-result { 
+            display: flex; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+            margin-top: 2%; 
+        }
+        .gacha-anim { 
+            display: none; 
+            text-align: center; 
+            font-size: 1.5em; 
+            color: #ff4500; 
+            animation: blink 1s infinite; 
+        }
+        .gacha-box { 
+            width: 90%; 
+            background-color: #f0f0f0; 
+            margin: 2%; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            box-sizing: border-box; 
+            border-radius: 1em; 
+            box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.1); 
+        }
+        button { 
+            font-size: 1em; 
+            padding: 1em 2em; 
+            margin: 2%; 
+            border: none; 
+            border-radius: 0.5em; 
+            background: #ff6f61; 
+            color: white; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+        }
+        button:hover { 
+            background: #ff3b3b; 
+        }
+        .hp-bar { 
+            background-color: #ddd; 
+            border: 0.1em solid black; 
+            width: 100%; 
+            height: 2em; 
+            position: relative; 
+            border-radius: 1em; 
+        }
+        .hp-bar-fill { 
+            background-color: green; 
+            height: 100%; 
+            width: 100%; 
+            border-radius: 1em; 
+            transition: width 0.5s; 
+        }
+        .item-list { 
+            display: none; 
+            flex-direction: column; 
+            align-items: center; 
+            margin-top: 2%; 
+        }
+        .player-item { 
+            border: 0.2em solid blue; 
+            background: #f0f8ff; 
+            border-radius: 0.5em; 
+            margin-bottom: 2%; 
+        }
+        .item-list .item { 
+            margin: 2%; 
+            padding: 5%; 
+            border: 0.2em dashed blue; 
+            background: #e6e6fa; 
+            border-radius: 0.5em; 
+        }
+        #score { 
+            position: fixed; 
+            top: 1%; 
+            font-size: 1.5em; 
+            font-weight: bold; 
+            color: red; /* スコアの色を赤に変更 */
+        }
+        .instructions {
+            margin-top: 2%;
+            font-size: 1em;
+            color: #333;
+            background: #fff3cd;
+            padding: 1em;
+            border: 0.2em solid #ffeeba;
+            border-radius: 0.5em;
+            box-shadow: 0 0.4em 0.8em rgba(0, 0, 0, 0.1);
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        @media (max-width: 600px) {
+            .container, .character, .enemy, .gacha-box, .item, .player-item {
+                width: 100%;
+                margin: 1em 0;
+            }
+            button {
+                width: 100%;
+                margin: 1em 0;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>ガチャ国勢調査</h1>
+        <p>近年、国勢調査の回答率が低下していることが問題になっています。国勢調査に協力しない国民が増えているため、国民の反論を跳ね除け、あなたの運と実力で国民を説得してください。</p>
+        <p><a href="PDr.html">ゲームのルールを見る</a></p>
+        <div id="score">スコア: 0</div>
+        <input type="text" id="gachaCount" placeholder="ガチャの回数 1~15（半角）">
+        <button id="start" onclick="startGame()">ガチャを引く</button>
+        <div id="gachaAnim" class="gacha-anim">🎉 ガチャを引いています... 🎉</div>
+        <div id="gachaResult" class="gacha-result"></div>
+        <h2>選んだ調査員</h2>
+        <div id="selectedCharacter"></div>
+        <h2>アイテム</h2>
+        <div id="items"></div>
+        <div class="item-list" id="itemList"></div>
+        <button id="startBattle" onclick="startBattle()" style="display:none;">調査開始</button>
+        
+        <div id="battle"></div>
+        <button id="finish" onclick="attack()">説得する</button>
+        <button id="gg" onclick="showItemList()">アイテムを使用</button>
+        <div class="instructions">リセットしたい場合はEscapeキーを押してください</div>
+    </div>
+    <h2>作成チームの最高スコア:4898</h2>
+    
+    <p>スコアはアイテムの使用数、調査数、ガチャの回数によって加算されます。</p>
+    <a href="">ホームページに戻る</a>
+    <script>
+                const characters = [
+            {name: '最強調査員 佐藤', rarity: 5, hp: 500, attack: 30},
+            {name: '最強調査員 前田', rarity: 5, hp: 490, attack: 32},
+            {name: '最強調査員 戸田', rarity: 5, hp: 510, attack: 27},
+            {name: 'エリート調査員 田中', rarity: 4, hp: 450, attack: 20},
+            {name: 'エリート調査員 山口', rarity: 4, hp: 455, attack: 22},
+            {name: 'エリート調査員 原西', rarity: 4, hp: 460, attack: 24},
+            {name: 'エリート調査員 深田', rarity: 4, hp: 445, attack: 23},
+            {name: 'エリート調査員 立花', rarity: 4, hp: 450, attack: 21},
+            {name: 'エリート調査員 本多', rarity: 4, hp: 475, attack: 26},
+            {name: 'エリート調査員 加藤', rarity: 4, hp: 450, attack: 22},
+            {name: '上級調査員 竹中', rarity: 3, hp: 360, attack: 15},
+            {name: '上級調査員 安田', rarity: 3, hp: 355, attack: 14},
+            {name: '上級調査員 久保田', rarity: 3, hp: 360, attack: 13},
+            {name: '上級調査員 安藤', rarity: 3, hp: 365, attack: 16},
+            {name: '上級調査員 桑原', rarity: 3, hp: 358, attack: 14},
+            {name: '上級調査員 平塚', rarity: 3, hp: 362, attack: 15},
+            {name: '上級調査員 北条', rarity: 3, hp: 357, attack: 13},
+            {name: '上級調査員 谷', rarity: 3, hp: 359, attack: 14},
+            {name: '上級調査員 柴田', rarity: 3, hp: 364, attack: 16},
+            {name: '上級調査員 近藤', rarity: 3, hp: 356, attack: 13},
+            {name: '上級調査員 内村', rarity: 3, hp: 355, attack: 12},
+            {name: '上級調査員 島', rarity: 3, hp: 363, attack: 15},
+            {name: '上級調査員 朝倉', rarity: 3, hp: 362, attack: 16},
+            {name: '上級調査員 村田', rarity: 3, hp: 360, attack: 14},
+            {name: '一般調査員 山岸', rarity: 2, hp: 300, attack: 10},
+            {name: '新人調査員 石川', rarity: 1, hp: 220, attack: 5},
+            {name: 'チート級調査員 山﨑', rarity: 10, hp: 5000, attack: 79}
+        ];
+
+        const items = [
+    {name: '回復ポーション', effect: 'hp', amount: 30},
+    {name: '説得力アップ (小)', effect: 'attack', amount: 10},
+    {name: '説得力アップ (中)', effect: 'attack', amount: 15},
+    {name: '説得力アップ (大)', effect: 'attack', amount: 20},
+    {name: '反論無効ポーション', effect: 'shield', amount: 1},
+    {name: '反論意欲低下 (小)', effect: 'debuff', amount: 10},
+    {name: '反論意欲低下 (中)', effect: 'debuff', amount: 20},
+    {name: '反論意欲低下 (大)', effect: 'debuff', amount: 30},
+    {name: 'メンタル増加ポーション (小)', effect: 'maxHp', amount: 50},
+    {name: 'メンタル増加ポーション (中)', effect: 'maxHp', amount: 100},
+    {name: 'メンタル増加ポーション (大)', effect: 'maxHp', amount: 150},
+    {name: '精神力アップ (小)', effect: 'defense', amount: 5},
+    {name: '精神力アップ (中)', effect: 'defense', amount: 10},
+    {name: '精神力アップ (大)', effect: 'defense', amount: 15},
+    {name: '反論意欲ダウン (小)', effect: 'enemyDebuff', amount: 5},
+    {name: '反論意欲ダウン (中)', effect: 'enemyDebuff', amount: 10},
+    {name: '反論意欲ダウン (大)', effect: 'enemyDebuff', amount: 15}
+];
+
+const specialItems = [
+    {name: '全回復ポーション', effect: 'fullHeal', amount: 0},
+    {name: '強制敗北アイテム', effect: 'instantKill', amount: 0}
+];
+
+
+        const historicalFigures = ['海斗', '昭英', '由井', '武弘', '佳奈美', '信一', '悠人', '雅美', '唯人', 'ジョージ'];
+
+        let gachaResults = [];
+        let selectedCharacter = null;
+        let playerItems = [];
+        let enemies = [];
+        let currentEnemyIndex = 0;
+        let gachaCount = 5;
+        let itemUseCount = 0;
+        let defeatedEnemies = 0;
+        let totalEnemyHp = 0;
+        let battleStarted = false;  // バトル開始フラグ
+
+        function startGame() {
+            const gachaInput = document.getElementById('gachaCount').value;
+            if (gachaInput === 'EP-C4') {
+                selectedCharacter = {name: 'チート級調査員 山﨑', rarity: 10, hp: 5000, attack: 79, initialHp: 5000};
+                const characterDiv = document.getElementById('selectedCharacter');
+                characterDiv.innerHTML = `
+                    調査員: ${selectedCharacter.name} (レアリティ: ${selectedCharacter.rarity}, HP: ${selectedCharacter.hp}, 攻撃力: ${selectedCharacter.attack})<br>
+                    <div class="hp-bar"><div class="hp-bar-fill" style="width: 100%;"></div></div>
+                `;
+                // 特別アイテムを追加
+                playerItems.push({name: '全回復ポーション', effect: 'fullHeal', amount: 0});
+                playerItems.push({name: '強制敗北アイテム', effect: 'instantKill', amount: 0});
+                displayItems();
+                document.getElementById('startBattle').style.display = 'block';
+                return;
+            } else if (parseInt(gachaInput) >= 1 && parseInt(gachaInput) <= 15) {
+                gachaCount = Math.min(Math.max(parseInt(gachaInput), 1), 15);
+                drawGacha();
+                document.getElementById("start").disabled = true;
+            } else {
+                alert('ガチャの回数は1から15を入力してください。');
+                return ;
+            }
+        }
+
+        function drawGacha() {
+            gachaResults = [];
+            document.getElementById('gachaAnim').style.display = 'block';
+            document.getElementById('gachaResult').style.display = 'none';
+
+            setTimeout(() => {
+                while (gachaResults.length < gachaCount) {
+                    const r = Math.random() * 100;
+                    let gachaType;
+                    if (r < 30) {
+                        gachaType = 'item';
+                    } else if (r < 35) {
+                        gachaType = 'rarity5';
+                    } else if (r < 45) {
+                        gachaType = 'rarity4';
+                    } else if (r < 70) {
+                        gachaType = 'rarity3';
+                    } else if (r < 90) {
+                        gachaType = 'rarity2';
+                    } else {
+                        gachaType = 'rarity1';
+                    }
+
+                    let result;
+                    if (gachaType === 'item') {
+                        result = items[Math.floor(Math.random() * items.length)];
+                    } else {
+                        const filteredCharacters = characters.filter(c => c.rarity === parseInt(gachaType.replace('rarity', ''), 10));
+                        result = filteredCharacters[Math.floor(Math.random() * filteredCharacters.length)];
+                    }
+
+                    gachaResults.push(result);
+                }
+
+                displayGachaResults();
+
+                document.getElementById('gachaAnim').style.display = 'none';
+                document.getElementById('gachaResult').style.display = 'flex';
+                document.getElementById('startBattle').style.display = 'block';
+            }, 2000);
+        }
+
+        function displayGachaResults() {
+    const resultDiv = document.getElementById('gachaResult');
+    resultDiv.innerHTML = '';
+    gachaResults.forEach((result, index) => {
+        const div = document.createElement('div');
+        div.classList.add('gacha-box');
+        if (result.hp) {
+            if (result.rarity === 1) {
+                div.classList.add('new'); // 新人調査員の場合のクラス追加
+            } else {
+                div.classList.add('character', `rare${result.rarity}`);
+            }
+            div.innerHTML = `調査員: ${result.name} (レアリティ: ${result.rarity}, HP: ${result.hp}, 攻撃力: ${result.attack})`;
+            div.onclick = () => {
+                if (!battleStarted) selectCharacter(result); // バトル開始後は選択不可
+            };
+        } else {
+            div.classList.add('item');
+            div.innerHTML = `アイテム: ${result.name} (${result.effect} +${result.amount})`;
+            div.onclick = () => {
+                if (!battleStarted) {
+                    addItem(result);
+                    div.onclick = null; // 二重クリックを防止
+                }
+            };
+        }
+        resultDiv.appendChild(div);
+    });
+}
+
+
+            function selectCharacter(character) {
+                selectedCharacter = character;
+                selectedCharacter.initialHp = character.hp; // initialHpをセット
+                const characterDiv = document.getElementById('selectedCharacter');
+                characterDiv.innerHTML = `
+                    調査員: ${character.name} (レアリティ: ${character.rarity}, メンタル: ${character.hp}, 説得力: ${character.attack})<br>
+                    <div class="hp-bar"><div class="hp-bar-fill" style="width: 100%;"></div></div>
+                `;
+            }
+
+            function addItem(item) {
+                playerItems.push(item);
+                displayItems();
+            }
+
+            function displayItems() {
+                const itemsDiv = document.getElementById('items');
+                itemsDiv.innerHTML = '';
+                playerItems.forEach(item => {
+                    const div = document.createElement('div');
+                    div.classList.add('player-item'); // プレイヤーの持っているアイテムを区別
+                    div.innerHTML = `アイテム: ${item.name} (${item.effect} +${item.amount})`;
+                    itemsDiv.appendChild(div);
+                });
+            }
+
+            function startBattle() {
+    battleStarted = true; // バトル開始フラグを設定
+    enemies = [];
+    for (let i = 0; i < 5; i++) {
+        let enemy = {
+            name: historicalFigures[Math.floor(Math.random() * historicalFigures.length)],
+            hp: Math.floor(Math.random() * 100) + 50,
+            attack: Math.floor(Math.random() * 10) + 15
+        };
+        enemy.initialHp = enemy.hp; // initialHpをセット
+        enemies.push(enemy);
+    }
+    currentEnemyIndex = 0;
+    updateBattleStatus();
+    
+    // キャラクター選択を無効化
+    document.getElementById("startBattle").disabled = true;
+    document.getElementById("gachaResult").style.pointerEvents = "none"; // ガチャ結果の無効化
+    document.getElementById("start").disabled = true; // ガチャボタンも無効化
+}
+
+function attack() {
+    if (!selectedCharacter) {
+        alert('調査員を選んでください');
+        return;
+    }
+    const enemy = enemies[currentEnemyIndex];
+    if (selectedCharacter.shielded) {
+        selectedCharacter.shielded = false;
+        alert('反論は無効化されました！');
+    } else {
+        enemy.hp -= selectedCharacter.attack;
+        updateHpBar(enemy, 'enemy');
+    }
+    if (enemy.hp <= 0) {
+        totalEnemyHp += enemy.initialHp; // totalEnemyHpを初期HPで更新
+        defeatedEnemies++;
+        currentEnemyIndex++;
+        if (currentEnemyIndex < enemies.length) {
+            var messages = [
+                "最初の国勢調査: 日本で最初の国勢調査は1872年に行われました。",
+                "調査頻度: 日本では5年ごとに国勢調査が行われています。",
+                "調査対象: 国勢調査は全国の住民を対象に行われ、外国人も含まれます。",
+                "回答義務: 国勢調査には法的な回答義務があり、回答しない場合は罰金が科されることがあります。",
+                "データの利用: 国勢調査のデータは、政策立案や経済予測などに利用されます。",
+                "調査内容: 国勢調査では、人口、世帯構成、住宅、教育、就業状況などが調査されます。",
+                "オンライン回答: 最近では、オンラインで国勢調査に回答することも可能になっています。",
+                "調査員: 国勢調査は地元の調査員が訪問して行います。",
+                "歴史的変遷: 国勢調査の内容や方法は、時代と共に変化してきました。",
+                "国際比較: 国勢調査のデータは、国際的な比較にも使われ、世界の人口動態を理解するのに役立ちます。"
+            ];
+            var randomIndex = Math.floor(Math.random() * messages.length);
+            var randomMessage = messages[randomIndex];
+            alert(`${enemy.name} が国勢調査に協力しました。次の国民を訪問します。国勢調査豆知識: ${randomMessage}`);
+        } else {
+            let newEnemy = {
+                name: historicalFigures[Math.floor(Math.random() * historicalFigures.length)],
+                hp: Math.floor(Math.random() * 100) + 50,
+                attack: Math.floor(Math.random() * 10) + 15
+            };
+            newEnemy.initialHp = newEnemy.hp; // initialHpをセット
+            enemies.push(newEnemy);
+            var messages = [
+                "最初の国勢調査: 日本で最初の国勢調査は1872年に行われました。",
+                "調査頻度: 日本では5年ごとに国勢調査が行われています。",
+                "調査対象: 国勢調査は全国の住民を対象に行われ、外国人も含まれます。",
+                "回答義務: 国勢調査には法的な回答義務があり、回答しない場合は罰金が科されることがあります。",
+                "データの利用: 国勢調査のデータは、政策立案や経済予測などに利用されます。",
+                "調査内容: 国勢調査では、人口、世帯構成、住宅、教育、就業状況などが調査されます。",
+                "オンライン回答: 最近では、オンラインで国勢調査に回答することも可能になっています。",
+                "調査員: 国勢調査は地元の調査員が訪問して行います。",
+                "歴史的変遷: 国勢調査の内容や方法は、時代と共に変化してきました。",
+                "国際比較: 国勢調査のデータは、国際的な比較にも使われ、世界の人口動態を理解するのに役立ちます。"
+            ];
+            var randomIndex = Math.floor(Math.random() * messages.length);
+            var randomMessage = messages[randomIndex];
+            alert(`${newEnemy.name} が国勢調査に協力しました。次の国民を訪問します。国勢調査豆知識: ${randomMessage}`);
+        }
+        updateBattleStatus();
+    } else {
+        enemyTurn();
+    }
+}
+
+function enemyTurn() {
+    const enemy = enemies[currentEnemyIndex];
+    if (!selectedCharacter.shielded) {
+        selectedCharacter.hp -= enemy.attack;
+    } else {
+        alert('攻撃が無効化されました！');
+    }
+    updateHpBar(selectedCharacter, 'character');
+    if (selectedCharacter.hp <= 0) {
+        alert('国勢調査の協力を拒まれました');
+        document.getElementById("finish").disabled = true;
+        document.getElementById("gg").disabled = true;
+
+        displayScore();
+    } else {
+        updateBattleStatus();
+    }
+}
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+        location.reload();
+    }
+});
+
+
+        function selectCharacter(character) {
+            selectedCharacter = character;
+            selectedCharacter.initialHp = character.hp; // initialHpをセット
+            const characterDiv = document.getElementById('selectedCharacter');
+            characterDiv.innerHTML = `
+                調査員: ${character.name} (レアリティ: ${character.rarity}, メンタル: ${character.hp}, 説得力: ${character.attack})<br>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width: 100%;"></div></div>
+            `;
+        }
+
+        function addItem(item) {
+            playerItems.push(item);
+            displayItems();
+        }
+
+        function displayItems() {
+            const itemsDiv = document.getElementById('items');
+            itemsDiv.innerHTML = '';
+            playerItems.forEach(item => {
+                const div = document.createElement('div');
+                div.classList.add('player-item'); // プレイヤーの持っているアイテムを区別
+                div.innerHTML = `アイテム: ${item.name} (${item.effect} +${item.amount})`;
+                itemsDiv.appendChild(div);
+            });
+        }
+
+        function startBattle() {
+            enemies = [];
+            for (let i = 0; i < 5; i++) {
+                let enemy = {
+                    name: historicalFigures[Math.floor(Math.random() * historicalFigures.length)],
+                    hp: Math.floor(Math.random() * 100) + 50,
+                    attack: Math.floor(Math.random() * 10) + 15
+                };
+                enemy.initialHp = enemy.hp; // initialHpをセット
+                enemies.push(enemy);
+            }
+            currentEnemyIndex = 0;
+            updateBattleStatus();
+
+            // キャラクター選択とガチャボタンを無効化
+            document.querySelectorAll('.gacha-box').forEach(box => box.onclick = null);
+            document.getElementById("startBattle").disabled = true;
+            document.getElementById("start").disabled = true; 
+            battleStarted = true; // バトル開始フラグをセット
+        }
+
+        function attack() {
+            if (!selectedCharacter) {
+                alert('調査員を選んでください');
+                return;
+            }
+            const enemy = enemies[currentEnemyIndex];
+            if (selectedCharacter.shielded) {
+                selectedCharacter.shielded = false;
+                alert('反論は無効化されました！');
+            } else {
+                enemy.hp -= selectedCharacter.attack;
+                updateHpBar(enemy, 'enemy');
+            }
+            if (enemy.hp <= 0) {
+                totalEnemyHp += enemy.initialHp; // totalEnemyHpを初期HPで更新
+                defeatedEnemies++;
+                currentEnemyIndex++;
+                if (currentEnemyIndex < enemies.length) {
+                    alert(`${enemy.name} が国勢調査に協力しました。次の国民を訪問します。`);
+                } else {
+                    let newEnemy = {
+                        name: historicalFigures[Math.floor(Math.random() * historicalFigures.length)],
+                        hp: Math.floor(Math.random() * 100) + 50,
+                        attack: Math.floor(Math.random() * 10) + 15
+                    };
+                    newEnemy.initialHp = newEnemy.hp; // initialHpをセット
+                    enemies.push(newEnemy);
+                    alert(`${enemy.name} が国勢調査に協力しました。次の国民を訪問します。`);
+                }
+                updateBattleStatus();
+            } else {
+                enemyTurn();
+            }
+        }
+
+        function enemyTurn() {
+            const enemy = enemies[currentEnemyIndex];
+            if (!selectedCharacter.shielded) {
+                selectedCharacter.hp -= enemy.attack;
+            } else {
+                alert('攻撃が無効化されました！');
+            }
+            updateHpBar(selectedCharacter, 'character');
+            if (selectedCharacter.hp <= 0) {
+                alert('国勢調査の協力を拒まれました');
+                document.getElementById("finish").disabled = true;
+                document.getElementById("gg").disabled = true;
+
+                displayScore();
+            } else {
+                updateBattleStatus();
+            }
+        }
+
+        function showItemList() {
+            const itemListDiv = document.getElementById('itemList');
+            itemListDiv.innerHTML = '';
+            playerItems.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+                itemDiv.innerHTML = `アイテム: ${item.name} (${item.effect} +${item.amount})`;
+                itemDiv.onclick = () => useItem(index);
+                itemListDiv.appendChild(itemDiv);
+            });
+            itemListDiv.style.display = 'flex';
+        }
+
+        function useItem(index) {
+            const item = playerItems[index];
+            playerItems.splice(index, 1); // アイテムを削除
+            document.getElementById('itemList').style.display = 'none';
+            itemUseCount++; // アイテム使用回数をカウント
+            if (!selectedCharacter) {
+                alert('調査員を選んでください');
+                return;
+            }
+            if (item.effect === 'hp') {
+                selectedCharacter.hp += item.amount;
+                updateHpBar(selectedCharacter, 'character');
+            } else if (item.effect === 'fullHeal') {
+                selectedCharacter.hp = selectedCharacter.initialHp;
+                updateHpBar(selectedCharacter, 'character');
+            } else if (item.effect === 'attack') {
+                selectedCharacter.attack += item.amount;
+            } else if (item.effect === 'shield') {
+                enemies[currentEnemyIndex].attack = 0;
+                alert('この国民の反論は無効化されます！');
+            } else if (item.effect === 'debuff') {
+                enemies[currentEnemyIndex].attack -= item.amount;
+            } else if (item.effect === 'instantKill') {
+                enemies[currentEnemyIndex].hp = 0;
+                updateHpBar(enemies[currentEnemyIndex], 'enemy');
+            } else if (item.effect === 'maxHp') {
+                selectedCharacter.hp += item.amount;
+                selectedCharacter.initialHp += item.amount; // initialHpにも反映
+                updateHpBar(selectedCharacter, 'character');
+            } else if (item.effect === 'defense') {
+                selectedCharacter.defense += item.amount;
+                enemies[currentEnemyIndex].attack -= item.amount;
+            } else if (item.effect === 'enemyDebuff') {
+                enemies[currentEnemyIndex].attack -= item.amount;
+            }
+            displayItems();
+            updateBattleStatus();
+        }
+
+        function updateHpBar(character, type) {
+            const hpBarFill = type === 'character' ? document.querySelector('#selectedCharacter .hp-bar-fill') : document.querySelector('#battle .hp-bar-fill');
+            if (hpBarFill) {
+                hpBarFill.style.width = `${(character.hp / character.initialHp) * 100}%`;
+            }
+        }
+
+        function updateBattleStatus() {
+            const battleDiv = document.getElementById('battle');
+            const enemy = enemies[currentEnemyIndex];
+            battleDiv.innerHTML = `
+                国民: ${enemy.name} (メンタル: ${enemy.hp}, 説得力: ${enemy.attack})<br>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width: ${(enemy.hp / enemy.initialHp) * 100}%;"></div></div>
+                調査員: ${selectedCharacter.name} (メンタル: ${selectedCharacter.hp}, 攻撃力: ${selectedCharacter.attack})<br>
+                <div class="hp-bar"><div class="hp-bar-fill" style="width: ${(selectedCharacter.hp / selectedCharacter.initialHp) * 100}%;"></div></div>
+            `;
+
+        }
+
+        function displayScore() {
+            const score = (itemUseCount * 6) + totalEnemyHp*3 + (defeatedEnemies * ((15 - gachaCount)*2));
+            const scoreDiv = document.getElementById('score');
+            scoreDiv.innerHTML = `スコア: ${score}`;
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                location.reload();
+            }
+        });
+    </script>
+</body>
+</html>
