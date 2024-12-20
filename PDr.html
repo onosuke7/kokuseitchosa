@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ガチャ国勢調査 - ルール説明</title>
+    <style>
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            margin: 0; 
+            font-family: Arial, sans-serif; 
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        }
+        .container { 
+            text-align: center; 
+            background: rgba(255, 255, 255, 0.8); 
+            padding: 20px; 
+            border-radius: 15px; 
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); 
+            max-width: 800px; 
+            margin: 20px;
+        }
+        h1 { 
+            color: #ff6f61; 
+        }
+        h2 { 
+            color: #333; 
+        }
+        p { 
+            color: #555; 
+            line-height: 1.6; 
+            text-align: left;
+        }
+        ul { 
+            text-align: left; 
+            color: #555; 
+            line-height: 1.6; 
+        }
+        li { 
+            margin-bottom: 10px; 
+        }
+        .back-button {
+            background-color: #ff6f61;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        .back-button:hover {
+            background-color: #ff3b3b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ガチャ国勢調査 - ルール説明</h1>
+        <h2>ゲームの目的</h2>
+        <p>ガチャ国勢調査ゲームの目的は、ガチャを引いて強力な調査員を集め、国勢調査の協力を得るために国民を説得することです。</p>
+        
+        <h2>基本ルール</h2>
+        <ul>
+            <li><strong>ガチャを引く:</strong> ガチャで調査員やアイテムを獲得します。ガチャの回数は1回から15回まで選べます。</li>
+            <li><strong>調査員を選択:</strong> 獲得した調査員の中から1人を選びます。調査を開始すると選んだ調査員は固定されます。</li>
+            <li><strong>アイテムを使用:</strong> 獲得したアイテムを使用して調査員を強化したり、敵国民の攻撃を防ぐことができます。</li>
+            <li><strong>調査を開始:</strong> 調査開始ボタンを押すと、選んだ調査員で調査が始まります。</li>
+            <li><strong>敵国民を説得:</strong> 調査員の攻撃力を使って敵国民のメンタルを減らし、説得します。敵国民を全て説得すると勝利です。</li>
+            <li><strong>スコア計算:</strong> 調査中に使用したアイテムの数、調査した国民の数、ガチャの回数に応じてスコアが決まります。</li>
+            <li><strong>注意：</strong>仮に調査員が排出されなかった場合はescapeで再読み込みしてください。また、escapeが反応しなかった場合は連打すると高確率でリセットされます。</li>
+        </ul>
+        
+        <a href="ガチャ戦闘.html" class="back-button">ゲームに戻る</a>
+    </div>
+</body>
+</html>
